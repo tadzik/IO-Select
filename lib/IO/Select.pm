@@ -4,19 +4,23 @@ class IO::Select {
     has $!pmc;
     has $!iter = 'FH1';
     has %!handles;
-    
+
     submethod BUILD {
         $!pmc := pir::new__Ps('Select');
     }
 
-    method add(IO $handle) {
+    method add($handle) {
         %!handles{$!iter} = $handle;
         my $fh := nqp::getattr(
-            pir::perl6_decontainerize__PP($handle), IO, '$!PIO'
+            pir::perl6_decontainerize__PP($handle), $handle.WHAT, '$!PIO'
         );
         my $mode = 4;
-        $mode += 2 if nqp::p6box_s($fh.mode) eq 'w';
-        $mode += 1 if nqp::p6box_s($fh.mode) eq 'r';
+        if pir::can($fh, 'mode') {
+            $mode += 2 if nqp::p6box_s($fh.mode) eq 'w';
+            $mode += 1 if nqp::p6box_s($fh.mode) eq 'r';
+        } else {
+            $mode += 3; # XXX We just assume it's IO::Socket or so
+        }
         # XXX No idea how to obtain an actual fd or any other unique
         # identifier, so I'll just assign consequent letters of alphabet
         # to each one
