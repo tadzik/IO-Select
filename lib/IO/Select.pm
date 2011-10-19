@@ -18,9 +18,6 @@ class IO::Select {
         } else {
             $mode += 3; # XXX We just assume it's IO::Socket or so
         }
-        # XXX No idea how to obtain an actual fd or any other unique
-        # identifier, so I'll just assign consequent letters of alphabet
-        # to each one
         $!pmc.update($fh, $handle, nqp::unbox_i($mode));
     }
 
