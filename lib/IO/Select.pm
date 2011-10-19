@@ -11,7 +11,7 @@ class IO::Select {
 
     method add($handle) {
         %!handles{$!iter} = $handle;
-        my $fh := nqp::getattr(
+        my Mu $fh := nqp::getattr(
             pir::perl6_decontainerize__PP($handle), $handle.WHAT, '$!PIO'
         );
         my $mode = 4;
@@ -42,10 +42,10 @@ class IO::Select {
         my Mu $ids := nqp::getattr(
             @parcel, Parcel, '$!storage'
         );
-        my Int $elems := nqp::p6box_i(pir::elements($ids));
+        my int $elems = pir::elements($ids);
         my @res;
-        loop (my Int $i = 0; $i < $elems; $i++) {
-            my Str $item := nqp::p6box_s(nqp::atpos($ids, nqp::unbox_i($i)));
+        loop (my int $i = 0; $i < $elems; $i = $i + 1) {
+            my Str $item := nqp::p6box_s(nqp::atpos($ids, $i));
             @res.push: %!handles{$item};
         }
         return @res;
