@@ -9,10 +9,10 @@ class IO::Select {
 
     method add($handle) {
         my Mu $fh := nqp::getattr(
-            pir::perl6_decontainerize__PP($handle), $handle.WHAT, '$!PIO'
+            nqp::decont($handle), $handle.WHAT, '$!PIO'
         );
         my $mode = 4;
-        if pir::can($fh, 'mode') {
+        if nqp::can($fh, 'mode') {
             $mode += 2 if nqp::p6box_s($fh.mode) eq 'w';
             $mode += 1 if nqp::p6box_s($fh.mode) eq 'r';
         } else {
