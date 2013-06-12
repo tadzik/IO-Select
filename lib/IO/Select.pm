@@ -19,6 +19,7 @@ class IO::Select {
             $mode += 3; # XXX We just assume it's IO::Socket or so
         }
         $!pmc.update($fh, $handle, nqp::unbox_i($mode));
+        True;
     }
 
     method can_read($timeout as Num) {
