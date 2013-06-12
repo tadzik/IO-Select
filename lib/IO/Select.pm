@@ -22,6 +22,10 @@ class IO::Select {
         True;
     }
 
+    # The following methods all return lists of the objects that
+    # were added with the add method.
+    # The timeout is in seconds.
+
     method can_read($timeout as Num) {
         $!pmc.can_read(nqp::unbox_n($timeout));
     }
