@@ -37,4 +37,10 @@ class IO::Select {
     method has_exception($timeout as Num) {
         $!pmc.has_exception(nqp::unbox_n($timeout));
     }
+
+    # This method returns a list of three lists containing the objects
+    # that were added with the add method.
+    method select($timeout as Num) {
+        $!pmc.select(nqp::unbox_n($timeout));
+    }
 }
