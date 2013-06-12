@@ -29,4 +29,8 @@ class IO::Select {
     method can_write($timeout as Num) {
         $!pmc.can_write(nqp::unbox_n($timeout));
     }
+
+    method has_exception($timeout as Num) {
+        $!pmc.has_exception(nqp::unbox_n($timeout));
+    }
 }
